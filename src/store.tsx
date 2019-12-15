@@ -2,6 +2,8 @@ import { Store, ActionsSubject, ReducerObservable, ReducerManager, State, StateO
 import { Injector } from '@angular/core';
 import { take } from 'rxjs/operators';
 
+let actions$: ScannedActionsSubject;
+
 export function createNgRxStore(reducers: any, initialState?: any) {
   const providers = [
     { provide: ActionsSubject, deps: [] },
@@ -32,6 +34,7 @@ export function createNgRxStore(reducers: any, initialState?: any) {
 
   const injector = Injector.create({ providers });
   const ngrxStore: Store<any> = injector.get(Store);
+  actions$ = injector.get(ScannedActionsSubject);
 
   return {
     select: ngrxStore.select.bind(ngrxStore),
@@ -45,4 +48,8 @@ export function createNgRxStore(reducers: any, initialState?: any) {
       return val;
     }
   }
+}
+
+export function useActions() {
+  return actions$;
 }

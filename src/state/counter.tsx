@@ -1,13 +1,14 @@
-import { createReducer, on, createAction, createSelector, createFeatureSelector } from '@ngrx/store';
+import { createReducer, on, createAction, createSelector, createFeatureSelector, props } from '@ngrx/store';
 
 export const increment = createAction('increment');
+export const set = createAction('set', props<{ val: number }>());
 
 export interface State {
   val: number;
 }
 
 export const initialState = {
-  val: 1
+  val: 0
 };
 
 export const reducer = createReducer(
@@ -15,6 +16,10 @@ export const reducer = createReducer(
   on(increment, state => ({
     ...state,
     val: state.val + 1
+  })),
+  on(set, (state, action) => ({
+    ...state,
+    val: action.val
   }))
 );
 
